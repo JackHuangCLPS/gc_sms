@@ -21,6 +21,21 @@ public class Tree {
 	 private String id;
 	 private String pId;
 	 private String name;
+	 
+	/**
+	 * Creates a new instance of Tree.
+	 *
+	 * @param id
+	 * @param pId
+	 * @param name
+	 */
+	
+	public Tree(String id, String pId, String name) {
+		super();
+		this.id = id;
+		this.pId = pId;
+		this.name = name;
+	}
 	/**
 	 * id.
 	 *

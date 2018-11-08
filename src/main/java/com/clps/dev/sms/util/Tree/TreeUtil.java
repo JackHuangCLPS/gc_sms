@@ -13,6 +13,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.io.ResolverUtil.IsA;
+
+import com.alibaba.druid.support.json.JSONUtils;
 import com.clps.dev.sms.pojo.Tree;
 
 
@@ -75,28 +78,81 @@ public class TreeUtil {
 		    } 
 		    return lists; 
 		  }
-		  public boolean checkChild(String pid) {
-			  for(Tree a:menuCommon) {
+		  /**
+		   * 
+		   * checkChild:
+		   * @Description:判断是否有子节点
+		   * @param:@param pid
+		   * @param:@return
+		   * @author Jack.Huang
+		   * @return:boolean
+		   */
+		  public boolean checkChild(String pid,List<Tree> list) {
+			  for(Tree a:list) {
 				  if(a.getpId()==pid) {
 					return true;  
 				  }
 			  }
 			  return false;
 		  }
-		  public boolean deleteChild(String id) {
-			  int i = 0;
-			  for(Tree a:menuCommon) {
+		  /**
+		   * 
+		   * deleteChild
+		   * @Description:删除子节点
+		   * @param:@param id
+		   * @param:@return
+		   * @author Jack.Huang
+		   * @return:boolean
+		   */
+		  public List<Tree> deleteChild(String id,List<Tree> list) {
+			  int i = -1;
+			  for(Tree a:list) {
 				  i++;
-				  if(a.getId()==id && a.getpId()!=null) {
-					  menuCommon.remove(i);
-					  return true;
+				  if(a.getId()==id && a.getpId()!="0") {
+					  //list.remove(i);
+					  break;
 				  }
 			  }
-			  return false;
+			  list.remove(i);
+			  return list;
 		  }
-		  
-		  public boolean deleteParent(String pid) {
-			  return false;
+		  /**
+		   * 
+		   * deleteParent:
+		   * @Description:删除父节点
+		   * @param:@param pid
+		   * @param:@param list
+		   * @param:@return
+		   * @author Jack.Huang
+		   * @return:boolean
+		   */
+		  public List<Tree> deleteParent(String pid,List<Tree> list) {
+			  int i = -1;
+			  for(Tree a : list) {
+				  i++;
+				  if (a.getId().equals(pid)) {
+					//list.remove(i);
+					if(checkChild(pid,list)) {
+						deleteChild(a.getId(),list);
+						break;
+					}
+				}
+			}
+			  list.remove(i);
+			  return list;
 		  }
+		  public static void main(String[] args) {
+			List<Tree> list = new ArrayList<>();
+			Tree tree = new Tree("1","0","首页");
+			Tree tree1 = new Tree("2","0","订单");
+			Tree tree2 = new Tree("3","1","预约");
+			list.add(tree);
+			list.add(tree1);
+			list.add(tree2);
+			TreeUtil treeUtil = new TreeUtil();
+			//System.out.println(JSONUtils.toJSONString(treeUtil.menuList(list)));
+			List<Tree> list2 = treeUtil.deleteParent("3", list);
+			System.out.println(JSONUtils.toJSONString(treeUtil.menuList(list2)));
+		}
 		  
 }
