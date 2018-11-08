@@ -13,10 +13,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.io.ResolverUtil.IsA;
-
 import com.alibaba.druid.support.json.JSONUtils;
-import com.clps.dev.sms.pojo.Tree;
+import com.clps.dev.sms.util.pojo.Tree;
 
 
 /**

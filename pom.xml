@@ -230,6 +230,6 @@
 
 	</dependencies>
   <build>
-     <finalName>gc_sms_mvn</finalName>
+     <finalName>gc_sms</finalName>
   </build>
 </project>
